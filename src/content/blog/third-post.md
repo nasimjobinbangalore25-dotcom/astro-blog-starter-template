@@ -1,5 +1,5 @@
 ---
-title: "Astro Framework BUILD"
+title: "Astro Framework Website Building "
 description: "Astro site amet"
 pubDate: "Jul 24 2026"
 heroImage: "/blog-placeholder-2.jpg"
