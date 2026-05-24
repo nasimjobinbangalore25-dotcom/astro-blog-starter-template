@@ -194,7 +194,19 @@ import { SITE_TITLE, SITE_DESCRIPTION } from '../consts';
       alert('Signup successful! (Check your console)');
       form.reset();
     }
-  });
+
+});
+
+button.addEventListener('click', function(event) {
+  event.preventDefault(); // Stops the form from submitting/refreshing
+  window.location.href = 'https://www.example.com';
+});
+
+
+
+
+
+  
 
   function showError(input: HTMLInputElement, errorId: string, message: string) {
     input.classList.add('invalid');
