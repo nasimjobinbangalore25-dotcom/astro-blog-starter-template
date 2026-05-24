@@ -1,64 +1,252 @@
-<!--
-/*
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login & Signup</title>
+    <link rel="stylesheet" href="style.css">
+</head>
 
+<style>
 
----
-export const prerender = false; // Not needed in 'server' mode
-
-import { isRegistered, registerUser } from "../../data/users"
-import { isValidEmail } from "../../utils/isValidEmail";
-
-const errors = { username: "", email: "", password: "" };
-if (Astro.request.method === "POST") {
-  try {
-    const data = await Astro.request.formData();
-    const name = data.get("username");
-    const email = data.get("email");
-    const password = data.get("password");
-    if (typeof name !== "string" || name.length < 1) {
-      errors.username += "Please enter a username. ";
-    }
-    if (typeof email !== "string" || !isValidEmail(email)) {
-      errors.email += "Email is not valid. ";
-    } else if (await isRegistered(email)) {
-      errors.email += "Email is already registered. ";
-    }
-    if (typeof password !== "string" || password.length < 6) {
-      errors.password += "Password must be at least 6 characters. ";
-    }
-    const hasErrors = Object.values(errors).some(msg => msg)
-    if (!hasErrors) {
-      await registerUser({name, email, password});
-      return Astro.redirect("/login");
-    }
-  } catch (error) {
-    if (error instanceof Error) {
-      console.error(error.message);
-    }
-  }
+:root {
+    --primary-color: #4f46e5;
+    --primary-hover: #4338ca;
+    --background: #f3f4f6;
+    --card-bg: #ffffff;
+    --text-main: #1f2937;
+    --text-muted: #6b7280;
+    --border: #e5e7eb;
 }
----
 
-*/
--->
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+    background-color: var(--background);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+}
+
+.form-container {
+    background: var(--card-bg);
+    padding: 2.5rem;
+    border-radius: 12px;
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+    width: 100%;
+    max-width: 400px;
+}
+
+.form-toggle {
+    display: flex;
+    margin-bottom: 2rem;
+    border-bottom: 2px solid var(--border);
+}
+
+.form-toggle button {
+    flex: 1;
+    background: none;
+    border: none;
+    padding: 0.75rem;
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--text-muted);
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.form-toggle button.active {
+    color: var(--primary-color);
+    border-bottom: 2px solid var(--primary-color);
+    margin-bottom: -2px;
+}
+
+.auth-form h2 {
+    color: var(--text-main);
+    margin-bottom: 1.5rem;
+    font-size: 1.5rem;
+}
+
+.input-group {
+    margin-bottom: 1.25rem;
+}
+
+.input-group label {
+    display: block;
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: var(--text-main);
+    margin-bottom: 0.5rem;
+}
+
+.input-group input {
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    font-size: 1rem;
+    transition: border-color 0.2s;
+}
+
+.input-group input:focus {
+    outline: none;
+    border-color: var(--primary-color);
+}
+
+.submit-btn {
+    width: 100%;
+    padding: 0.75rem;
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    margin-top: 0.5rem;
+}
+
+.submit-btn:hover {
+    background-color: var(--primary-hover);
+}
+
+.switch-text {
+    text-align: center;
+    font-size: 0.875rem;
+    color: var(--text-muted);
+    margin-top: 1.5rem;
+}
+
+.switch-text a {
+    color: var(--primary-color);
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.switch-text a:hover {
+    text-decoration: underline;
+}
+
+/* Helper class to hide form fields smoothly */
+.hidden {
+    display: none !important;
+}
 
 
-<h1>Register</h1>
-<form method="POST">
-  <label>
-    Username:
-    <input type="text" name="username" />
-  </label>
-  {errors.username && <p>{errors.username}</p>}
-  <label>
-    Email:
-    <input type="email" name="email" required />
-  </label>
-  {errors.email && <p>{errors.email}</p>}
-  <label>
-    Password:
-    <input type="password" name="password" required minlength="6" />
-  </label>
-  {errors.password && <p>{errors.password}</p>}
-  <button>Register</button>
-</form>
+
+
+
+
+</style>
+
+<body>
+    <div class="form-container">
+        <!-- Toggle Buttons -->
+        <div class="form-toggle">
+            <button id="toggleLogin" class="active">Login</button>
+            <button id="toggleSignup">Signup</button>
+        </div>
+
+        <!-- Login Form -->
+        <form id="loginForm" class="auth-form">
+            <h2>Welcome Back</h2>
+            <div class="input-group">
+                <label for="loginEmail">Email</label>
+                <input type="email" id="loginEmail" required placeholder="Enter your email">
+            </div>
+            <div class="input-group">
+                <label for="loginPassword">Password</label>
+                <input type="password" id="loginPassword" required placeholder="Enter your password">
+            </div>
+            <button type="submit" class="submit-btn">Login</button>
+            <p class="switch-text">Don't have an account? <a href="#" id="linkSignup">Sign up here</a></p>
+        </form>
+
+        <!-- Signup Form (Hidden by default via CSS) -->
+        <form id="signupForm" class="auth-form hidden">
+            <h2>Create Account</h2>
+            <div class="input-group">
+                <label for="signupName">Full Name</label>
+                <input type="text" id="signupName" required placeholder="Enter your name">
+            </div>
+            <div class="input-group">
+                <label for="signupEmail">Email</label>
+                <input type="email" id="signupEmail" required placeholder="Enter your email">
+            </div>
+            <div class="input-group">
+                <label for="signupPassword">Password</label>
+                <input type="password" id="signupPassword" required placeholder="Create a password">
+            </div>
+            <button type="submit" class="submit-btn">Sign Up</button>
+            <p class="switch-text">Already have an account? <a href="#" id="linkLogin">Log in here</a></p>
+        </form>
+    </div>
+
+    <script src="script.js">
+
+// Get DOM elements
+const loginForm = document.getElementById('loginForm');
+const signupForm = document.getElementById('signupForm');
+const toggleLoginBtn = document.getElementById('toggleLogin');
+const toggleSignupBtn = document.getElementById('toggleSignup');
+const linkSignup = document.getElementById('linkSignup');
+const linkLogin = document.getElementById('linkLogin');
+
+// Function to show Signup view
+function showSignup() {
+    loginForm.classList.add('hidden');
+    signupForm.classList.remove('hidden');
+    toggleLoginBtn.classList.remove('active');
+    toggleSignupBtn.classList.add('active');
+}
+
+// Function to show Login view
+function showLogin() {
+    signupForm.classList.add('hidden');
+    loginForm.classList.remove('hidden');
+    toggleSignupBtn.classList.remove('active');
+    toggleLoginBtn.classList.add('active');
+}
+
+// Event listeners for top toggle buttons
+toggleSignupBtn.addEventListener('click', showSignup);
+toggleLoginBtn.addEventListener('click', showLogin);
+
+// Event listeners for inline links at the bottom
+linkSignup.addEventListener('click', (e) => {
+    e.preventDefault(); // Stop page from scrolling or jumping
+    showSignup();
+});
+
+linkLogin.addEventListener('click', (e) => {
+    e.preventDefault();
+    showLogin();
+});
+
+// Form submission handlers (Ready for your backend/API logic)
+loginForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+    console.log('Logging in with:', document.getElementById('loginEmail').value);
+    // Add authentication code here
+});
+
+signupForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+    console.log('Signing up with:', document.getElementById('signupEmail').value);
+    // Add registration code here
+});
+
+
+
+
+
+</script>
+</body>
+</html>
