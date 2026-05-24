@@ -1,0 +1,73 @@
+---
+---
+
+<html>
+<head>
+  <title>Login</title>
+</head>
+
+<body>
+  <h1>Login</h1>
+
+  <form method="POST" action="/api/login">
+    <input
+      type="email"
+      name="email"
+      placeholder="Email"
+      required
+    />
+
+    <input
+      type="password"
+      name="password"
+      placeholder="Password"
+      required
+    />
+
+    <button type="submit">
+      Login
+    </button>
+  </form>
+</body>
+
+
+
+
+<script>
+
+import bcrypt from "bcryptjs";
+import { getUserByEmail } from "../../lib/db";
+
+export async function POST({ request, locals }: any) {
+  const form = await request.formData();
+
+  const email = form.get("email");
+  const password = form.get("password");
+
+  const user = await getUserByEmail(
+    locals.runtime.env.DB,
+    email
+  );
+
+  if (!user) {
+    return new Response("User not found", {
+      status: 404
+    });
+  }
+
+  const validPassword = await bcrypt.compare(
+    password,
+    user.password
+  );
+
+  if (!validPassword) {
+    return new Response("Invalid password", {
+      status: 401
+    });
+  }
+
+  return new Response("Login successful");
+}
+
+</script>
+</html>
