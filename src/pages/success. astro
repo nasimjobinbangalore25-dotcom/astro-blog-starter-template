@@ -1,0 +1,5 @@
+<!-- src/pages/index.astro -->
+<form action="/success" method="POST">
+  <input type="text" name="name" required />
+  <button type="submit">Submit</button>
+</form>
