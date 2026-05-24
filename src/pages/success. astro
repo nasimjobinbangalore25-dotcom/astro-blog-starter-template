@@ -1,4 +1,5 @@
-<!-- src/pages/index.astro 
+<!-- 
+src/pages/index.astro 
 <form action="/success" method="POST">
   <input type="text" name="name" required />
   <button type="submit">Submit</button>
@@ -29,7 +30,7 @@ import { SITE_TITLE, SITE_DESCRIPTION } from '../consts';
 			<h1>🧑‍🚀 Hello, ASTRO WELCOME TO MY SITE !</h1>
 
 
-<form action="/success" method="POST">
+<form action="/index" method="POST">
   <input type="text" name="name" required />
   <button type="submit">Submit</button>
 </form>
