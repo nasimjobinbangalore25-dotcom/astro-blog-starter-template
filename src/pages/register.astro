@@ -33,7 +33,11 @@ const posts = (await getCollection('blog')).sort(
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login & Signup</title>
-    <link rel="stylesheet" href="style.css">
+
+<BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
+
+
+   
 </head>
 
 <style>
