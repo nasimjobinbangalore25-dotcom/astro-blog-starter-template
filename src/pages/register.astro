@@ -264,6 +264,8 @@ linkLogin.addEventListener('click', (e) => {
     showLogin();
 });
 
+
+<! --
 // Form submission handlers (Ready for your backend/API logic)
 loginForm.addEventListener('submit', (e) => {
     e.preventDefault();
@@ -275,9 +277,60 @@ signupForm.addEventListener('submit', (e) => {
     e.preventDefault();
     console.log('Signing up with:', document.getElementById('signupEmail').value);
     // Add registration code here
+
 });
 
+-->
 
+// This script runs entirely on the client side
+  const form = document.getElementById('signup-form') as HTMLFormElement;
+  const usernameInput = document.getElementById('username') as HTMLInputElement;
+  const emailInput = document.getElementById('email') as HTMLInputElement;
+  const passwordInput = document.getElementById('password') as HTMLInputElement;
+
+  form?.addEventListener('submit', (e) => {
+    e.preventDefault();
+    let isValid = true;
+
+    // Reset errors
+    document.querySelectorAll('.error-message').forEach(el => el.textContent = '');
+    document.querySelectorAll('input').forEach(el => el.classList.remove('invalid'));
+
+    // Username Validation
+    if (usernameInput.value.trim().length < 3) {
+      showError(usernameInput, 'username-error', 'Username must be at least 3 characters.');
+      isValid = false;
+    }
+
+    // Email Validation
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(emailInput.value)) {
+      showError(emailInput, 'email-error', 'Please enter a valid email address.');
+      isValid = false;
+    }
+
+    // Password Validation
+    if (passwordInput.value.length < 8) {
+      showError(passwordInput, 'password-error', 'Password must be at least 8 characters.');
+      isValid = false;
+    }
+
+    if (isValid) {
+      // Gather data to send to an API route or server endpoint
+      const formData = new FormData(form);
+      const data = Object.fromEntries(formData);
+      
+      console.log('Form submitted successfully:', data);
+      alert('Signup successful! (Check your console)');
+      form.reset();
+    }
+  });
+
+  function showError(input: HTMLInputElement, errorId: string, message: string) {
+    input.classList.add('invalid');
+    const errorSpan = document.getElementById(errorId);
+    if (errorSpan) errorSpan.textContent = message;
+  }
 
 
 </script>
