@@ -30,8 +30,7 @@ const posts = (await getCollection('blog')).sort(
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
     <title>Login & Signup</title>
 
 <BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
@@ -180,6 +179,11 @@ body {
 </style>
 
 <body>
+
+
+<header/>
+
+
     <div class="form-container">
         <!-- Toggle Buttons -->
         <div class="form-toggle">
@@ -281,5 +285,10 @@ signupForm.addEventListener('submit', (e) => {
 
 
 </script>
+
+
+
 </body>
+
+<footer/>
 </html>
