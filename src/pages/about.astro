@@ -59,4 +59,185 @@ import Layout from '../layouts/BlogPost.astro';
 		ac. Blandit libero volutpat sed cras. Nec tincidunt praesent semper feugiat nibh sed pulvinar
 		proin gravida. Egestas integer eget aliquet nibh praesent tristique magna.
 	</p>
+
+
+
+
+
+****""**"""*****"""""**"""""*""*"""*""**
+
+---
+import BaseLayout from '../layouts/BaseLayout.astro'; // Adjust the path to your actual layout
+
+const pageTitle = "About Me";
+
+const identity = {
+  firstName: "Alex",
+  role: "Frontend Developer & Tech Blogger",
+  location: "Earth",
+  hobbies: ["Coding late at night", "Exploring UI design", "Writing technical guides"],
+};
+
+const skills = [
+  { name: "HTML5 & CSS3", level: "Expert" },
+  { name: "JavaScript (ES6+)", level: "Advanced" },
+  { name: "Astro", level: "Advanced" },
+  { name: "Bootstrap 5", level: "Advanced" },
+  { name: "C / C++", level: "Intermediate" }
+];
+
+const recentProjects = [
+  { title: "Custom Notepad App", description: "A lightweight, command-line utility built in C for fast note-taking." },
+  { title: "Interactive UI Suite", description: "A collection of responsive navigation bars, modals, and dynamic login forms." },
+  { title: "Personal Knowledge Base", description: "This very blog, built with Astro for blazing fast performance." }
+];
+---
+
+<BaseLayout title={pageTitle}>
+  <main class="about-container">
+    <!-- Hero Section -->
+    <section class="hero">
+      <div class="hero-content">
+        <h1>Hi, I'm <span class="highlight">{identity.firstName}</span> 👋</h1>
+        <h2>{identity.role}</h2>
+        <p class="bio">
+          I'm a passionate developer focused on building fast, responsive, and visually striking web experiences. 
+          I love breaking down complex programming concepts into digestible, bite-sized blog posts. Whether I'm tinkering 
+          with low-level memory management in C or optimizing a frontend layout, I'm always looking for ways to build better software.
+        </p>
+      </div>
+    </section>
+
+    <hr class="separator" />
+
+    <!-- Skills Section -->
+    <section class="skills-section">
+      <h3>My Toolkit</h3>
+      <p>The technologies and languages I work with most frequently:</p>
+      <div class="skills-grid">
+        {skills.map((skill) => (
+          <div class="skill-card">
+            <span class="skill-name">{skill.name}</span>
+            <span class="skill-level">{skill.level}</span>
+          </div>
+        ))}
+      </div>
+    </section>
+
+    <hr class="separator" />
+
+    <!-- Current Projects Section -->
+    <section class="projects-section">
+      <h3>What I'm Working On</h3>
+      <div class="projects-grid">
+        {recentProjects.map((project) => (
+          <div class="project-card">
+            <h4>{project.title}</h4>
+            <p>{project.description}</p>
+          </div>
+        ))}
+      </div>
+    </section>
+
+    <hr class="separator" />
+
+    <!-- Personal Facts Section -->
+    <section class="facts-section">
+      <h3>Beyond the Code</h3>
+      <ul>
+        <li>📍 Based in {identity.location}</li>
+        <li>🚀 Currently obsessed with building zero-JavaScript-by-default sites using Astro.</li>
+        <li>✍️ When I'm not writing code, I'm usually:
+          <ul>
+            {identity.hobbies.map((hobby) => <li>{hobby}</li>)}
+          </ul>
+        </li>
+      </ul>
+    </section>
+  </main>
+</BaseLayout>
+
+<style>
+  .about-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem 1rem;
+    font-family: system-ui, sans-serif;
+    color: #333;
+    line-height: 1.6;
+  }
+
+  .highlight {
+    background: linear-gradient(45deg, #ff5e62, #ff9966);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  h1 { font-size: 2.5rem; margin-bottom: 0.5rem; }
+  h2 { font-size: 1.5rem; color: #666; font-weight: 400; margin-bottom: 1.5rem; }
+  h3 { font-size: 1.75rem; margin-bottom: 1rem; color: #111; }
+
+  .bio { font-size: 1.1rem; color: #444; }
+
+  .separator {
+    border: 0;
+    height: 1px;
+    background: #e0e0e0;
+    margin: 2.5rem 0;
+  }
+
+  /* Skills Grid */
+  .skills-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+    margin-top: 1.5rem;
+  }
+
+  .skill-card {
+    background: #f8f9fa;
+    padding: 1rem;
+    border-radius: 8px;
+    border: 1px solid #e9ecef;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .skill-name { font-weight: 600; }
+  .skill-level { font-size: 0.85rem; color: #6c757d; background: #e9ecef; padding: 0.2rem 0.5rem; border-radius: 4px; }
+
+  /* Projects Grid */
+  .projects-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 1.5rem;
+    margin-top: 1.5rem;
+  }
+
+  .project-card {
+    padding: 1.5rem;
+    border-radius: 8px;
+    border: 1px solid #e0e0e0;
+    background: #fff;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+    transition: transform 0.2s;
+  }
+
+  .project-card:hover {
+    transform: translateY(-2px);
+  }
+
+  .project-card h4 { margin: 0 0 0.5rem 0; color: #0076ff; }
+  .project-card p { margin: 0; font-size: 0.95rem; color: #555; }
+
+  .facts-section ul { padding-left: 1.2rem; }
+  .facts-section li { margin-bottom: 0.5rem; }
+</style>
+
+
+
+
+
+
 </Layout>
