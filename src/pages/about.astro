@@ -64,34 +64,6 @@ import Layout from '../layouts/BlogPost.astro';
 
 
 
-****""**"""*****"""""**"""""*""*"""*""**
-
----
-import BaseLayout from '../layouts/BaseLayout.astro'; // Adjust the path to your actual layout
-
-const pageTitle = "About Me";
-
-const identity = {
-  firstName: "Alex",
-  role: "Frontend Developer & Tech Blogger",
-  location: "Earth",
-  hobbies: ["Coding late at night", "Exploring UI design", "Writing technical guides"],
-};
-
-const skills = [
-  { name: "HTML5 & CSS3", level: "Expert" },
-  { name: "JavaScript (ES6+)", level: "Advanced" },
-  { name: "Astro", level: "Advanced" },
-  { name: "Bootstrap 5", level: "Advanced" },
-  { name: "C / C++", level: "Intermediate" }
-];
-
-const recentProjects = [
-  { title: "Custom Notepad App", description: "A lightweight, command-line utility built in C for fast note-taking." },
-  { title: "Interactive UI Suite", description: "A collection of responsive navigation bars, modals, and dynamic login forms." },
-  { title: "Personal Knowledge Base", description: "This very blog, built with Astro for blazing fast performance." }
-];
----
 
 <BaseLayout title={pageTitle}>
   <main class="about-container">
