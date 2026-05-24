@@ -1,7 +1,7 @@
 
 ---
 import BaseHead from '../components/BaseHead.astro';
-import Header from '#../components/Header.astro';
+import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import { SITE_TITLE, SITE_DESCRIPTION } from '../consts';
 ---
@@ -11,15 +11,200 @@ import { SITE_TITLE, SITE_DESCRIPTION } from '../consts';
 	<head>
 		<BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
 	</head>
+
+
+<style>
+  /* Astro automatically scopes these styles to this component only */
+  .form-container {
+    background: #ffffff;
+    padding: 2.5rem;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    width: 100%;
+    max-width: 400px;
+    margin: 2rem auto;
+    font-family: system-ui, -apple-system, sans-serif;
+  }
+
+  h2 {
+    margin: 0 0 0.5rem 0;
+    color: #1a1a1a;
+    font-size: 1.75rem;
+  }
+
+  .subtitle {
+    margin: 0 0 2rem 0;
+    color: #666;
+    font-size: 0.95rem;
+  }
+
+  .form-group {
+    margin-bottom: 1.5rem;
+    display: flex;
+    flex-direction: column;
+  }
+
+  label {
+    font-size: 0.87rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    color: #333;
+  }
+
+  input {
+    padding: 0.75rem;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 1rem;
+    transition: border-color 0.2s, box-shadow 0.2s;
+  }
+
+  input:focus {
+    outline: none;
+    border-color: #4f46e5;
+    box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+  }
+
+  input.invalid {
+    border-color: #ef4444;
+    background-color: #fef2f2;
+  }
+
+  .error-message {
+    color: #ef4444;
+    font-size: 0.8rem;
+    margin-top: 0.35rem;
+    min-height: 1.2rem; /* Prevents layout shifting when error appears */
+  }
+
+  .submit-btn {
+    width: 100%;
+    padding: 0.75rem;
+    background-color: #4f46e5;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s;
+  }
+
+  .submit-btn:hover {
+    background-color: #4338ca;
+  }
+</style>
+
+
 	<body>
 		<Header />
 		<main>
 			<h1>🧑‍🚀 ASTRO WELCOME TO MY SIGNUP SITE !</h1>
-			
+
+<!--
+
+			---
+// src/components/SignupForm.astro
+// Astro component frontmatter (runs at build time)
+---
+-->
+<div class="form-container">
+  <h2>Create an Account</h2>
+  <p class="subtitle">Join us today! It only takes a minute.</p>
+  
+  <form id="signup-form" novalidate>
+    <div class="form-group">
+      <label for="username">Username</label>
+      <input type="text" id="username" name="username" placeholder="e.g., alex_dev" required />
+      <span class="error-message" id="username-error"></span>
+    </div>
+
+    <div class="form-group">
+      <label for="email">Email Address</label>
+      <input type="email" id="email" name="email" placeholder="you@example.com" required />
+      <span class="error-message" id="email-error"></span>
+    </div>
+
+    <div class="form-group">
+      <label for="password">Password</label>
+      <input type="password" id="password" name="password" placeholder="At least 8 characters" required />
+      <span class="error-message" id="password-error"></span>
+    </div>
+
+    <button type="submit" class="submit-btn">Sign Up</button>
+  </form>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 		</main>
 		<Footer />
 	</body>
+<script>
+  // This script runs entirely on the client side
+  const form = document.getElementById('signup-form') as HTMLFormElement;
+  const usernameInput = document.getElementById('username') as HTMLInputElement;
+  const emailInput = document.getElementById('email') as HTMLInputElement;
+  const passwordInput = document.getElementById('password') as HTMLInputElement;
+
+  form?.addEventListener('submit', (e) => {
+    e.preventDefault();
+    let isValid = true;
+
+    // Reset errors
+    document.querySelectorAll('.error-message').forEach(el => el.textContent = '');
+    document.querySelectorAll('input').forEach(el => el.classList.remove('invalid'));
+
+    // Username Validation
+    if (usernameInput.value.trim().length < 3) {
+      showError(usernameInput, 'username-error', 'Username must be at least 3 characters.');
+      isValid = false;
+    }
+
+    // Email Validation
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(emailInput.value)) {
+      showError(emailInput, 'email-error', 'Please enter a valid email address.');
+      isValid = false;
+    }
+
+    // Password Validation
+    if (passwordInput.value.length < 8) {
+      showError(passwordInput, 'password-error', 'Password must be at least 8 characters.');
+      isValid = false;
+    }
+
+    if (isValid) {
+      // Gather data to send to an API route or server endpoint
+      const formData = new FormData(form);
+      const data = Object.fromEntries(formData);
+      
+      console.log('Form submitted successfully:', data);
+      alert('Signup successful! (Check your console)');
+      form.reset();
+    }
+  });
+
+  function showError(input: HTMLInputElement, errorId: string, message: string) {
+    input.classList.add('invalid');
+    const errorSpan = document.getElementById(errorId);
+    if (errorSpan) errorSpan.textContent = message;
+  }
+</script>
+
+
+
 </html>
 
 
