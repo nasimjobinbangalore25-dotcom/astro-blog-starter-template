@@ -13,6 +13,351 @@ import { SITE_TITLE, SITE_DESCRIPTION } from '../consts';
 
 <!--
 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Auth Portal - Sign In / Sign Up</title>
+    <style>
+        :root {
+            --primary-color: #4f46e5;
+            --primary-hover: #4338ca;
+            --bg-color: #f3f4f6;
+            --card-bg: #ffffff;
+            --text-color: #1f2937;
+            --muted-text: #6b7280;
+            --google-red: #ea4335;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            color: var(--text-color);
+        }
+
+        /* Card Flip Container */
+        .auth-container {
+            width: 400px;
+            height: 550px;
+            perspective: 1000px;
+        }
+
+        .card-inner {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            transform-style: preserve-3d;
+            transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        /* Toggle Class for Flipping */
+        .auth-container.flip .card-inner {
+            transform: rotateY(180deg);
+        }
+
+        /* Front and Back Card Styling */
+        .auth-card {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            background-color: var(--card-bg);
+            border-radius: 12px;
+            padding: 40px 30px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .auth-card.signup-card {
+            transform: rotateY(180deg);
+        }
+
+        h2 {
+            margin-bottom: 8px;
+            font-size: 24px;
+            text-align: center;
+        }
+
+        p.subtitle {
+            color: var(--muted-text);
+            font-size: 14px;
+            text-align: center;
+            margin-bottom: 24px;
+        }
+
+        /* Form Controls */
+        .form-group {
+            margin-bottom: 16px;
+        }
+
+        label {
+            display: block;
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 6px;
+            color: var(--text-color);
+        }
+
+        input {
+            width: 100%;
+            padding: 10px 14px;
+            border: 1px solid #d1d5db;
+            border-radius: 6px;
+            font-size: 14px;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        input:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+        }
+
+        /* Buttons */
+        .btn {
+            width: 100%;
+            padding: 12px;
+            border: none;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.2s, transform 0.1s;
+        }
+
+        .btn:active {
+            transform: scale(0.98);
+        }
+
+        .btn-primary {
+            background-color: var(--primary-color);
+            color: white;
+            margin-top: 10px;
+        }
+
+        .btn-primary:hover {
+            background-color: var(--primary-hover);
+        }
+
+        .divider {
+            display: flex;
+            align-items: center;
+            text-align: center;
+            margin: 20px 0;
+            color: var(--muted-text);
+            font-size: 12px;
+        }
+
+        .divider::before, .divider::after {
+            content: '';
+            flex: 1;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .divider:not(:empty)::before { margin-right: .5em; }
+        .divider:not(:empty)::after { margin-left: .5em; }
+
+        .btn-google {
+            background-color: #fff;
+            color: #3c4043;
+            border: 1px solid #dadce0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .btn-google:hover {
+            background-color: #f8f9fa;
+            border-color: #cee0fc;
+        }
+
+        .btn-google svg {
+            width: 18px;
+            height: 18px;
+        }
+
+        /* Switch links */
+        .switch-text {
+            text-align: center;
+            font-size: 13px;
+            margin-top: 20px;
+            color: var(--muted-text);
+        }
+
+        .switch-text span {
+            color: var(--primary-color);
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        .switch-text span:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="auth-container" id="authContainer">
+        <div class="card-inner">
+            
+            <div class="auth-card signin-card">
+                <h2>Welcome Back</h2>
+                <p class="subtitle">Please enter your details to sign in</p>
+                
+                <form id="signInForm">
+                    <div class="form-group">
+                        <label for="signInEmail">Email Address</label>
+                        <input type="email" id="signInEmail" placeholder="you@example.com" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="signInPassword">Password</label>
+                        <input type="password" id="signInPassword" placeholder="••••••••" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Sign In</button>
+                </form>
+
+                <div class="divider">or</div>
+
+                <button class="btn btn-google GoogleAuthBtn">
+                    <svg viewBox="0 0 24 24">
+                        <path fill="#EA4335" d="M12 5.04c1.64 0 3.12.56 4.28 1.67l3.2-3.2C17.52 1.58 14.96 1 12 1 7.35 1 3.4 3.65 1.5 7.5l3.6 2.8C6.01 7.12 8.78 5.04 12 5.04z"/>
+                        <path fill="#4285F4" d="M23.49 12.27c0-.81-.07-1.59-.2-2.36H12v4.51h6.46c-.29 1.48-1.14 2.73-2.4 3.58l3.6 2.8c2.1-1.94 3.83-4.81 3.83-8.53z"/>
+                        <path fill="#FBBC05" d="M5.1 14.7c-.25-.76-.39-1.57-.39-2.4s.14-1.64.39-2.4L1.5 7.1C.54 9.03 0 11.19 0 13.5s.54 4.47 1.5 6.4l3.6-2.8z"/>
+                        <path fill="#34A853" d="M12 23c3.24 0 5.97-1.07 7.96-2.91l-3.6-2.8c-1.11.75-2.53 1.21-4.36 1.21-3.22 0-6-2.08-6.97-5.26l-3.6 2.8C3.4 20.35 7.35 23 12 23z"/>
+                    </svg>
+                    Continue with Google
+                </button>
+
+                <p class="switch-text">Don't have an account? <span id="toSignUp">Sign up</span></p>
+            </div>
+
+            <div class="auth-card signup-card">
+                <h2>Create Account</h2>
+                <p class="subtitle">Join us today by making a new account</p>
+                
+                <form id="signUpForm">
+                    <div class="form-group">
+                        <label for="signUpEmail">Email Address</label>
+                        <input type="email" id="signUpEmail" placeholder="you@example.com" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="signUpPassword">Password</label>
+                        <input type="password" id="signUpPassword" placeholder="Minimum 6 characters" minlength="6" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Sign Up</button>
+                </form>
+
+                <div class="divider">or</div>
+
+                <button class="btn btn-google GoogleAuthBtn">
+                    <svg viewBox="0 0 24 24">
+                        <path fill="#EA4335" d="M12 5.04c1.64 0 3.12.56 4.28 1.67l3.2-3.2C17.52 1.58 14.96 1 12 1 7.35 1 3.4 3.65 1.5 7.5l3.6 2.8C6.01 7.12 8.78 5.04 12 5.04z"/>
+                        <path fill="#4285F4" d="M23.49 12.27c0-.81-.07-1.59-.2-2.36H12v4.51h6.46c-.29 1.48-1.14 2.73-2.4 3.58l3.6 2.8c2.1-1.94 3.83-4.81 3.83-8.53z"/>
+                        <path fill="#FBBC05" d="M5.1 14.7c-.25-.76-.39-1.57-.39-2.4s.14-1.64.39-2.4L1.5 7.1C.54 9.03 0 11.19 0 13.5s.54 4.47 1.5 6.4l3.6-2.8z"/>
+                        <path fill="#34A853" d="M12 23c3.24 0 5.97-1.07 7.96-2.91l-3.6-2.8c-1.11.75-2.53 1.21-4.36 1.21-3.22 0-6-2.08-6.97-5.26l-3.6 2.8C3.4 20.35 7.35 23 12 23z"/>
+                    </svg>
+                    Continue with Google
+                </button>
+
+                <p class="switch-text">Already have an account? <span id="toSignIn">Sign in</span></p>
+            </div>
+
+        </div>
+    </div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { 
+            getAuth, 
+            createUserWithEmailAndPassword, 
+            signInWithEmailAndPassword, 
+            GoogleAuthProvider, 
+            signInWithPopup 
+        } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+
+        // TODO: Replace this object with your actual Firebase project configuration
+        const firebaseConfig = {
+            apiKey: "YOUR_API_KEY",
+            authDomain: "YOUR_AUTH_DOMAIN",
+            projectId: "YOUR_PROJECT_ID",
+            storageBucket: "YOUR_STORAGE_BUCKET",
+            messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
+            appId: "YOUR_APP_ID"
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const googleProvider = new GoogleAuthProvider();
+
+        /* --- UI Toggling Logic --- */
+        const authContainer = document.getElementById('authContainer');
+        document.getElementById('toSignUp').addEventListener('click', () => authContainer.classList.add('flip'));
+        document.getElementById('toSignIn').addEventListener('click', () => authContainer.classList.remove('flip'));
+
+        /* --- Authentication Logic --- */
+
+        // 1. All-Type Email Sign Up
+        document.getElementById('signUpForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const email = document.getElementById('signUpEmail').value;
+            const password = document.getElementById('signUpPassword').value;
+
+            createUserWithEmailAndPassword(auth, email, password)
+                .then((userCredential) => {
+                    alert("Account created successfully! Welcome " + userCredential.user.email);
+                })
+                .catch((error) => {
+                    alert("Sign Up Error: " + error.message);
+                });
+        });
+
+        // 2. All-Type Email Sign In
+        document.getElementById('signInForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const email = document.getElementById('signInEmail').value;
+            const password = document.getElementById('signInPassword').value;
+
+            signInWithEmailAndPassword(auth, email, password)
+                .then((userCredential) => {
+                    alert("Logged in successfully! Welcome back " + userCredential.user.email);
+                })
+                .catch((error) => {
+                    alert("Sign In Error: " + error.message);
+                });
+        });
+
+        // 3. Google Authentication (Applies to both buttons)
+        document.querySelectorAll('.GoogleAuthBtn').forEach(button => {
+            button.addEventListener('click', () => {
+                signInWithPopup(auth, googleProvider)
+                    .then((result) => {
+                        alert("Google authentication successful! Hello " + result.user.displayName);
+                    })
+                    .catch((error) => {
+                        alert("Google Auth Error: " + error.message);
+                    });
+            });
+        });
+    </script>
+</body>
+</html>
+
+
 <html>
 <head>
   <title>Login</title>
@@ -93,3 +438,4 @@ export async function POST({ request, locals }: any) {
 </html>
 
 -->
+
