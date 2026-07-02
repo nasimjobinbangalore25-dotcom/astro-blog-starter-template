@@ -1,0 +1,61 @@
+
+
+---
+import BaseHead from '../components/BaseHead.astro';
+<!--import Header from '../components/Header.astro';  -->
+import Footer from '../components/Footer.astro';
+import { SITE_TITLE, SITE_DESCRIPTION } from '../consts';
+---
+
+
+
+
+<html lang="en">
+  <head>
+    <title>Data Entry Portal</title>
+  </head>
+  <body>
+    <h1>User Information Entry</h1>
+
+    <form id="dataForm">
+      <input type="text" id="name" placeholder="Full Name" required />
+      
+      <!-- Aadhaar input placeholder -->
+      <input type="text" id="aadhaar" placeholder="Enter Aadhaar Number" required />
+      
+      <input type="tel" id="contact" placeholder="Contact Number" required />
+      
+      <button type="submit">Add to List</button>
+    </form>
+
+    <div id="gridContainer" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 20px;">
+      <!-- Dynamic list items will appear here -->
+    </div>
+
+    <script>
+      const form = document.getElementById('dataForm') as HTMLFormElement;
+      const container = document.getElementById('gridContainer') as HTMLDivElement;
+
+      form.addEventListener('submit', (e) => {
+        e.preventDefault();
+        
+        const name = (document.getElementById('name') as HTMLInputElement).value;
+        const contact = (document.getElementById('contact') as HTMLInputElement).value;
+        
+        // Create the card element
+        const card = document.createElement('div');
+        card.style.border = '1px solid #ccc';
+        card.style.padding = '10px';
+        card.innerHTML = `
+          <p><strong>Name:</strong> ${name}</p>
+          <p><strong>Contact:</strong> ${contact}</p>
+          <p><strong>Aadhaar:</strong> [Redacted]</p>
+          <button onclick="this.parentElement.remove()">Remove</button>
+        `;
+        
+        container.appendChild(card);
+        form.reset();
+      });
+    </script>
+  </body>
+</html>
